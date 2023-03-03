@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 const BASE_URL = "https://global.atdtravel.com/api/";
 
 function App() {
-  const searchInit = {
-    geo: "en",
-    // title: "",
-    // limit: 10,
-    // offset: 0,
-    // id: "",
-  };
-
   const [list, setList] = useState([]);
-  const [search, setSearch] = useState(searchInit);
+  const [search, setSearch] = useState({
+    geo: "en",
+    title: "",
+    limit: 10,
+    offset: 0,
+    id: "",
+  });
 
   async function searchDatabase(searchArgs) {
     let query = new URLSearchParams(searchArgs).toString();
@@ -21,26 +19,44 @@ function App() {
         method: "GET",
       });
       if (response.ok) return response.json();
-      throw new Error("Products not found.");
     } catch (error) {
       console.log(error);
     }
   }
 
-  useEffect(() => {
-    async function getList() {
-      const result = await searchDatabase(search);
-      setList([...result.data]);
+  async function getList() {
+    const result = await searchDatabase(search);
+    setList([...result.data]);
+  }
+
+  const handleChange = (e) => {
+    setSearch({
+      ...search,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      getList();
+    } catch (error) {
+      console.log(error);
     }
-    getList();
-  }, [search]);
+  };
 
   return (
     <>
       Product search
-      <form>
+      <form autoComplete="off" onSubmit={handleSubmit}>
         Title
-        <input></input>
+        <input
+          type="search"
+          placeholder="Start typing"
+          name="title"
+          value={search.title}
+          onChange={handleChange}
+        ></input>
         <button type="submit">Search</button>
       </form>
       <table>
