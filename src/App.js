@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-
-const BASE_URL = "https://global.atdtravel.com/api/";
+import React, { useState, useEffect } from "react";
+import db from "./db";
 
 function App() {
   const [list, setList] = useState([]);
-  const [search, setSearch] = useState({
+  const [searchArgs, setSearchArgs] = useState({
     geo: "en",
     title: "",
     limit: 10,
@@ -12,26 +11,14 @@ function App() {
     id: "",
   });
 
-  async function searchDatabase(searchArgs) {
-    let query = new URLSearchParams(searchArgs).toString();
-    try {
-      let response = await fetch(BASE_URL + "products?" + query, {
-        method: "GET",
-      });
-      if (response.ok) return response.json();
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   async function getList() {
-    const result = await searchDatabase(search);
+    const result = await db.search(searchArgs);
     setList([...result.data]);
   }
 
   const handleChange = (e) => {
-    setSearch({
-      ...search,
+    setSearchArgs({
+      ...searchArgs,
       [e.target.name]: e.target.value,
     });
   };
@@ -45,19 +32,22 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    getList();
+  }, []);
+
   return (
     <>
       Product search
       <form autoComplete="off" onSubmit={handleSubmit}>
-        Title
         <input
           type="search"
-          placeholder="Start typing"
+          placeholder="Search"
           name="title"
-          value={search.title}
+          value={searchArgs.title}
           onChange={handleChange}
         ></input>
-        <button type="submit">Search</button>
+        <button type="submit">Show results</button>
       </form>
       <table>
         <thead>

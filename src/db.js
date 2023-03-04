@@ -1,17 +1,19 @@
 const BASE_URL = "https://global.atdtravel.com/api/";
 
-async function searchDatabase(searchArgs) {
-  let query = new URLSearchParams(searchArgs).toString();
+async function search(searchParams) {
+  let query = new URLSearchParams(searchParams).toString();
   try {
     let response = await fetch(BASE_URL + "products?" + query, {
       method: "GET",
     });
     if (response.ok) return response.json();
-    throw new Error("Products not found.");
   } catch (error) {
     console.log(error);
   }
 }
+
+const exports = { search };
+export default exports;
 
 // const args = {
 //   geo: "en",
