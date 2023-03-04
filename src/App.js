@@ -1,40 +1,42 @@
 import React, { useState, useEffect } from "react";
 import db from "./db";
 
-function App() {
-  const [list, setList] = useState([]);
-  const [searchArgs, setSearchArgs] = useState({
-    geo: "en",
-    title: "",
-    limit: 10,
-    offset: 0,
-    id: "",
-  });
+const init = {
+  geo: "en",
+  title: "",
+  limit: 10,
+  offset: 0,
+  id: "",
+};
 
-  async function getList() {
-    const result = await db.search(searchArgs);
-    setList([...result.data]);
-  }
+function App() {
+  const [args, setArgs] = useState(init);
+  const [search, setSearch] = useState(init);
+  const [list, setList] = useState([]);
 
   const handleChange = (e) => {
-    setSearchArgs({
-      ...searchArgs,
+    setArgs({
+      ...args,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    try {
-      getList();
-    } catch (error) {
-      console.log(error);
-    }
+    setSearch(args);
   };
 
   useEffect(() => {
+    async function getList() {
+      try {
+        const result = await db.search(search);
+        setList([...result.data]);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     getList();
-  }, []);
+  }, [search]);
 
   return (
     <>
@@ -44,7 +46,7 @@ function App() {
           type="search"
           placeholder="Search"
           name="title"
-          value={searchArgs.title}
+          value={args.title}
           onChange={handleChange}
         ></input>
         <button type="submit">Show results</button>
