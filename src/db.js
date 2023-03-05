@@ -7,6 +7,7 @@ async function search(searchParams) {
       method: "GET",
     });
     if (response.ok) return response.json();
+    alert("No product found, try another search term.");
   } catch (error) {
     console.log(error);
   }

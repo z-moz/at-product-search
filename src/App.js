@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import db from "./db";
+import Table from "./components/Table";
 
 const init = {
   geo: "en",
@@ -11,8 +12,20 @@ const init = {
 
 function App() {
   const [args, setArgs] = useState(init);
-  const [query, setQuery] = useState(init);
+  const [data, setData] = useState({});
   const [list, setList] = useState([]);
+
+  useEffect(() => {
+    async function getData() {
+      try {
+        const result = await db.search(args);
+        setData((data) => (data = result));
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getData();
+  }, [args]);
 
   const handleChange = (e) => {
     setArgs({
@@ -23,21 +36,8 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setQuery(args);
+    setList(data.data);
   };
-
-  useEffect(() => {
-    async function getList() {
-      try {
-        const result = await db.search(query);
-        setList(result.data);
-      } catch (error) {
-        console.log(error);
-        alert("Can't find a product with this search term.");
-      }
-    }
-    getList();
-  }, [query]);
 
   return (
     <>
@@ -50,30 +50,11 @@ function App() {
           value={args.title}
           onChange={handleChange}
         ></input>
-        <button type="submit">Show results</button>
+        <button type="submit">
+          Show {Boolean(data.meta) && data.meta.total_count} results
+        </button>
       </form>
-      <table>
-        <thead>
-          <tr>
-            <th>Image</th>
-            <th>Title</th>
-            <th>Destination</th>
-          </tr>
-        </thead>
-        <tbody>
-          {list.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>
-                  <img src={item.img_sml} alt={item.title} loading="lazy"></img>
-                </td>
-                <td>{item.title}</td>
-                <td>{item.dest}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <Table list={list} />
     </>
   );
 }
