@@ -11,7 +11,7 @@ const init = {
 
 function App() {
   const [args, setArgs] = useState(init);
-  const [search, setSearch] = useState(init);
+  const [query, setQuery] = useState(init);
   const [list, setList] = useState([]);
 
   const handleChange = (e) => {
@@ -23,20 +23,21 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSearch(args);
+    setQuery(args);
   };
 
   useEffect(() => {
     async function getList() {
       try {
-        const result = await db.search(search);
-        setList([...result.data]);
+        const result = await db.search(query);
+        setList(result.data);
       } catch (error) {
         console.log(error);
+        alert("Can't find a product with this search term.");
       }
     }
     getList();
-  }, [search]);
+  }, [query]);
 
   return (
     <>
