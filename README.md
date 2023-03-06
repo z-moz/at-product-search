@@ -1,70 +1,29 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# AT product search
 
-## Available Scripts
 
-In the project directory, you can run:
+## Build process
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Usually I like to start by poking around in the API through the terminal for no reason other than just to get familiar with it a bit.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Next I like to list all the requests I think the app should use in an api response viewer (I used Insomnia). This is partly to test the responses and response filtering, but also because I like having one place where I have all the requests laid out. It helps me be clear on what the app needs to do. In this case it was just the one GET request with various query parameters. 
 
-### `npm test`
+I'm familiar with JS for front end and back end and python for back end. I went with JS for this project because it would need a front end and not much else. 
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+I created a project folder with a sandbox.js file. I wrote the search function with the fetch request and filtered for various keys (title, img, destination etc). I ran this one file in Node.js to test the function.
 
-### `npm run build`
+As there was no need to deploy this it meant that a simple React app with no back end was enough. As there would be no CORS issue so no need for a mini backend/proxy. I used CRA to make a basic front end in the project folder, and pushed to github. 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+I built a markup skeleton and displayed some dummy data in the browser. 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Then I planned the components and what data I wanted to save in states. I went with three states: The search parameters, the fetched data, and the list of products. Just the search parameters and list of products would have been enough for submitting a search and displaying results. But I also wanted to have a result counter that updates while the user is typing.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Next I created the components with states and functions to get and display data from the API. 
 
-### `npm run eject`
+I made an extra feature, the search hits counter displayed on the button that submits the search. In hindsight I'm not that happy with this feature, it's slow and gimmicky. If it worked perfectly it would be cool, but as it is now the app would work better without it. 
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+On the plus side this prompted me to re-read the React documentation on updating state and re-rendering and that was a welcome refresher. 
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If I spent more time on this app I would add these things: 
+more search parameters, pagination, a 'Clear Search' button, a default image/logo for when an image has a broken link - and of course CSS with Bootstrap. 
